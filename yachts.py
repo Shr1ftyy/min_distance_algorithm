@@ -8,7 +8,7 @@ This example uses 3 yachts
 
 has_pos_list = False
 pos = []# multi-dimensional list containing positions of every yacht over time
-inc = 0.01 #increments
+inc = 0.001 #increments
 time_lim = 100# time limit
 distances = [] # Distance values
 x_s = np.arange(0, time_lim+inc, inc) # All values of time when relevant computations are performed
@@ -51,7 +51,8 @@ for t in x_s:
     pos[y].append(yachts[y])
 
   dist = distance(yachts)
-  print(f"Time: {t} | Distance: {dist}")
+  if t % 10 == 0:
+    print(f"Time: {t} | Distance: {dist}")
   distances.append(dist)
  
 minimum = min(distances) # Minimum distance between boats
