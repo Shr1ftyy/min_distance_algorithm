@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 This example uses 3 yachts
 '''
 
+pos = [[],[],[]]# multi-dimensional list containing positions of every yacht over time
 inc = 0.01 #increments
 t = 0 # time
 time_lim = 10 # time limit
@@ -28,14 +29,17 @@ while t<=time_lim:
   v_a = np.array([[-2],[3]]) + (accel*t)# Velocity with acceleration
   A = np.array([[1],[2]]) + (v_a*t)# Position with acceleration
   yachts.append(A)
+  pos[0].append(A)
 
   v_b = np.array([[3],[-2]]) + (accel*t)# Velocity with acceleration
   B = np.array([[-4],[3]]) + (v_b*t)# Position with acceleration
   yachts.append(B)
+  pos[1].append(B)
 
   v_c = np.array([[1],[-1]]) + (accel*t)# Velocity with acceleration
   C = np.array([[-5],[1]]) + (v_c*t)# Position with acceleration
   yachts.append(C)
+  pos[2].append(C)
 
   dist = distance(yachts)
   print(f"Time: {t} | Distance: {dist}")
@@ -46,10 +50,23 @@ minimum = min(distances) # Minimum distance between boats
 time_min = distances.index(minimum)*inc # Timestamp of when boats are closest to each other
 print(f"Min. distance is {minimum} when t = {time_min} : 0≤t≤{time_lim}")
 # plt.scatter(np.arange(0, time_lim+inc, inc), distances)
-plt.scatter(time_min, min(distances), color='orange')
-plt.plot(x_s, distances)
-plt.plot([time_min for x in range(len(np.arange(0, max(distances), 1)))], np.arange(0, max(distances), 1))
-plt.title('Total Distance over Time')
-plt.xlabel('Time')
-plt.ylabel('Distance')
+# fig = plt.figure()
+fig, (dist_fun, yacht_vis) = plt.subplots(2)
+# dist_fun = fig.add_subplot(111)
+dist_fun.scatter(time_min, min(distances), color='orange')
+dist_fun.plot(x_s, distances)
+dist_fun.plot([time_min for x in range(len(np.arange(0, max(distances), 1)))], np.arange(0, max(distances), 1))
+dist_fun.set_title('Total Distance over Time')
+dist_fun.set_xlabel('Time')
+dist_fun.set_ylabel('Distance')
+
+# yacht_vis = fig.add_subplot(121)
+print(pos[0])
+for i in range(len(pos)):
+  yacht_vis.scatter([pos[i][j][0][0] for j in range(time_lim)], [pos[i][k][1][0] for k in range(time_lim)])
+
+yacht_vis.set_title('Position of Yachts')
+yacht_vis.set_xlabel('x')
+yacht_vis.set_ylabel('y')
+
 plt.show()
