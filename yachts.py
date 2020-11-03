@@ -6,8 +6,9 @@ import matplotlib.pyplot as plt
 This example uses 3 yachts
 '''
 
-pos = [[],[],[]]# multi-dimensional list containing positions of every yacht over time
-inc = 0.1 #increments
+has_pos_list = False
+pos = []# multi-dimensional list containing positions of every yacht over time
+inc = 0.01 #increments
 time_lim = 100# time limit
 distances = [] # Distance values
 x_s = np.arange(0, time_lim+inc, inc) # All values of time when relevant computations are performed
@@ -28,25 +29,31 @@ for t in x_s:
   v_a = np.array([[-2],[3]]) + (accel*t)# Velocity with acceleration
   A = np.array([[1],[2]]) + (v_a*t)# Position with acceleration
   yachts.append(A)
-  pos[0].append(A)
 
   v_b = np.array([[3],[-2]]) + (accel*t)# Velocity with acceleration
   B = np.array([[-4],[3]]) + (v_b*t)# Position with acceleration
   yachts.append(B)
-  pos[1].append(B)
 
   v_c = np.array([[1],[-1]]) + (accel*t)# Velocity with acceleration
   C = np.array([[-5],[1]]) + (v_c*t)# Position with acceleration
   yachts.append(C)
-  pos[2].append(C)
+
+  # v_d = np.array([[-3],[2]]) + (accel*t)# Velocity with acceleration
+  # D = np.array([[-1],[-1]]) + (v_d*t)# Position with acceleration
+  # yachts.append(D)
+
+  if not has_pos_list:
+    for y in range(len(yachts)):
+      pos.append([])
+    has_pos_list = True
+
+  for y in range(len(yachts)):
+    pos[y].append(yachts[y])
 
   dist = distance(yachts)
   print(f"Time: {t} | Distance: {dist}")
   distances.append(dist)
  
-print(x_s)
-print(x_s[len(x_s)-1])
-print(len(x_s))
 minimum = min(distances) # Minimum distance between boats
 time_min = distances.index(minimum)*inc # Timestamp of when boats are closest to each other
 print(f"Min. distance is {minimum} when t = {time_min} : 0≤t≤{time_lim}")
@@ -59,8 +66,10 @@ dist_fun.set_xlabel('Time')
 dist_fun.set_ylabel('Distance')
 
 # yacht_vis = fig.add_subplot(121)
-for i in range(len(pos)):
-  yacht_vis.scatter([pos[i][j][0][0] for j in range(time_lim)], [pos[i][k][1][0] for k in range(time_lim)])
+
+for p_yacht in range(len(pos)):
+  yacht_vis.plot([pos[p_yacht][j][0][0] for j in range(len(pos[0]))], [pos[p_yacht][k][1][0] for k in range(len(pos[0]))])
+  yacht_vis.scatter([pos[p_yacht][j][0][0] for j in range(len(pos[0]))][-1:], [pos[p_yacht][k][1][0] for k in range(len(pos[0]))][-1:])
 
 yacht_vis.set_title('Position of Yachts')
 yacht_vis.set_xlabel('x')
