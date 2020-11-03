@@ -7,9 +7,8 @@ This example uses 3 yachts
 '''
 
 pos = [[],[],[]]# multi-dimensional list containing positions of every yacht over time
-inc = 0.01 #increments
-t = 0 # time
-time_lim = 10 # time limit
+inc = 0.1 #increments
+time_lim = 100# time limit
 distances = [] # Distance values
 x_s = np.arange(0, time_lim+inc, inc) # All values of time when relevant computations are performed
 
@@ -22,7 +21,7 @@ def distance(yachts):
       total_dist += d  
   return total_dist
 
-while t<=time_lim:
+for t in x_s:
   yachts = []
 
   accel = np.array([[0.1],[0.2]])
@@ -44,15 +43,14 @@ while t<=time_lim:
   dist = distance(yachts)
   print(f"Time: {t} | Distance: {dist}")
   distances.append(dist)
-  t += inc
  
+print(x_s)
+print(x_s[len(x_s)-1])
+print(len(x_s))
 minimum = min(distances) # Minimum distance between boats
 time_min = distances.index(minimum)*inc # Timestamp of when boats are closest to each other
 print(f"Min. distance is {minimum} when t = {time_min} : 0≤t≤{time_lim}")
-# plt.scatter(np.arange(0, time_lim+inc, inc), distances)
-# fig = plt.figure()
 fig, (dist_fun, yacht_vis) = plt.subplots(2)
-# dist_fun = fig.add_subplot(111)
 dist_fun.scatter(time_min, min(distances), color='orange')
 dist_fun.plot(x_s, distances)
 dist_fun.plot([time_min for x in range(len(np.arange(0, max(distances), 1)))], np.arange(0, max(distances), 1))
@@ -61,7 +59,6 @@ dist_fun.set_xlabel('Time')
 dist_fun.set_ylabel('Distance')
 
 # yacht_vis = fig.add_subplot(121)
-print(pos[0])
 for i in range(len(pos)):
   yacht_vis.scatter([pos[i][j][0][0] for j in range(time_lim)], [pos[i][k][1][0] for k in range(time_lim)])
 
