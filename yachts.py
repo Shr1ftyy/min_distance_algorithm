@@ -2,6 +2,10 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
+'''
+This example uses 3 yachts
+'''
+
 inc = 0.01 #increments
 t = 0 # time
 time_lim = 10 # time limit
