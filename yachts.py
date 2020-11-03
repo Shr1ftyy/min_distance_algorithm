@@ -57,7 +57,7 @@ for t in x_s:
  
 minimum = min(distances) # Minimum distance between boats
 time_min = distances.index(minimum)*inc # Timestamp of when boats are closest to each other
-print(f"Min. distance is {minimum} when t = {time_min} : 0≤t≤{time_lim}")
+print(f"Min. distance is {minimum} when t ≈ {time_min} : 0≤t≤{time_lim} with increments of {inc}")
 fig, (dist_fun, yacht_vis) = plt.subplots(2)
 dist_fun.scatter(time_min, min(distances), color='orange')
 dist_fun.plot(x_s, distances)
