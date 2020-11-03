@@ -44,7 +44,7 @@ while t<=time_lim:
  
 minimum = min(distances) # Minimum distance between boats
 time_min = distances.index(minimum)*inc # Timestamp of when boats are closest to each other
-print(f"Min. distance is {minimum} when t = {time_min} : t⩾0")
+print(f"Min. distance is {minimum} when t = {time_min} : 0≤t≤{time_lim}")
 # plt.scatter(np.arange(0, time_lim+inc, inc), distances)
 plt.scatter(time_min, min(distances), color='orange')
 plt.plot(x_s, distances)
