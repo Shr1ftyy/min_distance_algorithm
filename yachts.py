@@ -3,15 +3,16 @@ import math
 import matplotlib.pyplot as plt
 
 '''
-This example uses 3 yachts
+This example uses 5 yachts
 '''
 
 has_pos_list = False
 pos = []# multi-dimensional list containing positions of every yacht over time
-inc = 0.001 #increments
-time_lim = 100# time limit
+inc = 0.01 #increments
+min_time = 0
+time_lim = 10# time limit
 distances = [] # Distance values
-x_s = np.arange(0, time_lim+inc, inc) # All values of time when relevant computations are performed
+x_s = np.arange(min_time, time_lim+inc, inc) # All values of time when relevant computations are performed
 
 def distance(yachts):
   total_dist = 0 # Total distance between each unique pair of boat
@@ -38,13 +39,13 @@ for t in x_s:
   C = np.array([[-5],[1]]) + (v_c*t)# Position with acceleration
   yachts.append(C)
 
-  # v_d = np.array([[-3],[2]]) + (accel*t)# Velocity with acceleration
-  # D = np.array([[-1],[-1]]) + (v_d*t)# Position with acceleration
-  # yachts.append(D)
+  v_d = np.array([[-3],[2]]) + (accel*t)# Velocity with acceleration
+  D = np.array([[-1],[-1]]) + (v_d*t)# Position with acceleration
+  yachts.append(D)
 
-  # v_e = np.array([[-2],[1]]) + (accel*t)# Velocity with acceleration
-  # E = np.array([[2],[-1]]) + (v_e*t)# Position with acceleration
-  # yachts.append(E)
+  v_e = np.array([[-2],[1]]) + (accel*t)# Velocity with acceleration
+  E = np.array([[2],[-1]]) + (v_e*t)# Position with acceleration
+  yachts.append(E)
 
   if not has_pos_list:
     for y in range(len(yachts)):
@@ -59,18 +60,21 @@ for t in x_s:
     print(f"Time: {t} | Distance: {dist}")
   distances.append(dist)
  
+derivative = [(distances[x]-distances[x-1])/inc for x in range(1, len(distances))] # Values for the derivative of the distance function, starting with 0 
+# derivative = np.diff(distances)/np.diff(x_s)
+print(derivative[0]) 
+
 minimum = min(distances) # Minimum distance between boats
 time_min = distances.index(minimum)*inc # Timestamp of when boats are closest to each other
 print(f"Min. distance is {minimum} when t ≈ {time_min} : 0≤t≤{time_lim} with increments of {inc}")
 fig, (dist_fun, yacht_vis) = plt.subplots(2)
 dist_fun.scatter(time_min, min(distances), color='orange')
 dist_fun.plot(x_s, distances)
+dist_fun.plot(x_s[1:], derivative)
 dist_fun.plot([time_min for x in range(len(np.arange(0, max(distances), 1)))], np.arange(0, max(distances), 1))
 dist_fun.set_title('Total Distance over Time')
 dist_fun.set_xlabel('Time')
 dist_fun.set_ylabel('Distance')
-
-# yacht_vis = fig.add_subplot(121)
 
 for p_yacht in range(len(pos)):
   yacht_vis.plot([pos[p_yacht][j][0][0] for j in range(len(pos[0]))], [pos[p_yacht][k][1][0] for k in range(len(pos[0]))])
