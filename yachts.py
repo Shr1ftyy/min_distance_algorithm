@@ -42,6 +42,10 @@ for t in x_s:
   # D = np.array([[-1],[-1]]) + (v_d*t)# Position with acceleration
   # yachts.append(D)
 
+  # v_e = np.array([[-2],[1]]) + (accel*t)# Velocity with acceleration
+  # E = np.array([[2],[-1]]) + (v_e*t)# Position with acceleration
+  # yachts.append(E)
+
   if not has_pos_list:
     for y in range(len(yachts)):
       pos.append([])
